@@ -3,10 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import requests
 import base64
-
 import os
-COLLOV_API_KEY = os.environ.get("COLLOV_API_KEY")
-
 
 app = FastAPI()
 
@@ -18,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-COLLOV_API_KEY = "ck_FC2FACD9549312DAB14531DECD71D938"  # Replace if needed
+COLLOV_API_KEY = os.environ.get("COLLOV_API_KEY") or "ck_FC2FACD9549312DAB14531DECD71D938"
 COLLOV_UPLOAD_ENDPOINT = "https://api.collov.com/api/upload"
 COLLOV_RESULT_ENDPOINT = "https://api.collov.com/api/render-result"
 
@@ -33,7 +30,9 @@ async def upload_image(image: UploadFile = File(...)):
     }
 
     upload_payload = {
-        "image": f"data:{image.content_type};base64,{image_b64}"
+        "image": f"data:{image.content_type};base64,{image_b64}",
+        "roomType": "living room",
+        "style": "Scandinavian"
     }
 
     upload_response = requests.post(COLLOV_UPLOAD_ENDPOINT, json=upload_payload, headers=headers)
