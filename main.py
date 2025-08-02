@@ -4,6 +4,10 @@ from fastapi.responses import JSONResponse
 import requests
 import base64
 
+import os
+COLLOV_API_KEY = os.environ.get("COLLOV_API_KEY")
+
+
 app = FastAPI()
 
 app.add_middleware(
